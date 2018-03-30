@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  db2:
+     image: mariadb
+     volumes:
+       - ./db-data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: test1234
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: test1234
+     container_name: wp_blog_db
+
+  wordpress2:
+     image: wordpress:latest
+     expose:
+       - 80
+     restart: always
+     volumes:
+       - ./web-data:/var/www/html
+     environment:
+       VIRTUAL_HOST: blog2.test.com
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: test1234
+     container_name: wp_blog
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
