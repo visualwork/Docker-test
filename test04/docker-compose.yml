@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  pure-ftpd:
+    build:
+      context: pure-ftpd
+    image: ftp/pure-ftpd:14.04
+    container_name: ftpd
+    ports:
+      - "21:21"
+      - "20000-20099:20000-20099"
+    volumes:
+      - "/ftp-data:/home/ftp"
+    restart: always
+
+  ssh-server:
+    build:
+      context: ssh-server
+    image: ssh-server
+    container_name: ssh-server
+    ports:
+      - "12341:22"
+    volumes:
+      - "/ftp-data:/home/test/ftp:ro"
+    restart: always
