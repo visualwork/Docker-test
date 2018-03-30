@@ -11,7 +11,7 @@ services:
        MYSQL_DATABASE: wordpress
        MYSQL_USER: wordpress
        MYSQL_PASSWORD: test1234
-     container_name: wp_blog_db
+     container_name: wp_blog_db2
 
   wordpress2:
      image: wordpress:latest
@@ -22,10 +22,10 @@ services:
        - ./web-data:/var/www/html
      environment:
        VIRTUAL_HOST: blog2.test.com
-       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_HOST: db2:3306
        WORDPRESS_DB_USER: wordpress
        WORDPRESS_DB_PASSWORD: test1234
-     container_name: wp_blog
+     container_name: wp_blog2
 
 networks:
   default:
