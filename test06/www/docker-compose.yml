@@ -1,0 +1,41 @@
+version: '2'
+services:
+  mysql:
+    image: mariadb:10.3.1
+    volumes:
+      - ./mariadb/db-data/:/var/lib/mysql
+      - ./mariadb/my.cnf:/etc/mysql/mariadb.conf.d/custom.cnf
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: docker
+    container_name: mariadb-www
+
+  nginx-www:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./www-data:/www
+
+    environment:
+      - VIRTUAL_HOST=www.test.com
+    container_name: nginx-www
+
+  php:
+    build: php
+    expose:
+      - 9000
+    restart: always
+    volumes:
+      - ./php/conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./www-data:/www
+    container_name: php-www
+
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
